@@ -121,12 +121,35 @@ tectonic paper.tex
 Some filenames, code comments and historical records use **TOPOCERT**, the
 project's original working name. It refers to the same work as INTACT.
 
-## Status
+## Citation
 
-Preprint **v1** accompanying the INTACT paper.
+Preprint **v1**. If you use this work, please cite it:
 
-**No LICENSE file is included yet, so all rights are reserved.** A license will
-be added when the preprint is posted; please do not redistribute before then.
+```bibtex
+@misc{lovecky2026intact,
+  author       = {Loveck{\'y}, Radoslav},
+  title        = {{INTACT}: Sound Worst-Case Topological Certificates for
+                  Segmentation Score Maps},
+  year         = {2026},
+  publisher    = {Zenodo},
+  version      = {v1},
+  doi          = {PENDING},
+  url          = {https://github.com/arperon-labs/INTACT}
+}
+```
+
+## License
+
+Licensed under the **Apache License 2.0** — see [LICENSE](LICENSE) and
+[NOTICE](NOTICE). Apache-2.0 includes an express patent grant; no patent is
+being filed on this work.
+
+The paper itself (`paper/paper.{md,tex,pdf}` and `paper/figs/`) is covered by
+the same licence here; the Zenodo record carries its own licence field, and a
+Creative Commons licence is the usual choice for the document there.
+
+Third-party datasets (DRIVE, CHASE_DB1) and the mosaic source imagery are
+**not** redistributed — see [NOTICE](NOTICE) for their terms.
 
 Radoslav Lovecký  ·  Arperon
 `info@arperon.com`  ·  ORCID [0009-0000-5669-920X](https://orcid.org/0009-0000-5669-920X)
