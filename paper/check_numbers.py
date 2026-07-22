@@ -149,6 +149,14 @@ check("Table 2 caption: certified length 23,408.1 / 14,969.8 px at eps 0.10/0.40
 check("Table 2 caption: certified segments 2,173.2 / 1,003.5 at eps 0.10/0.40",
       f'{_m("0.1", "n_certified_segments"):.1f}' == "2173.2"
       and f'{_m("0.4", "n_certified_segments"):.1f}' == "1003.5")
+check("Sec 5.5: enclosure exceeds persistence on 9 of 30 crops at BOTH "
+      "eps=0.25 and eps=0.40, and the cohort MEANS never flip (persistence "
+      "stays above enclosure at every swept eps)",
+      all(sum(1 for a, b in zip(rs[e]["per_crop"]["n_cycles_enclosure"],
+                                rs[e]["per_crop"]["n_cycles_persistence"])
+              if a > b) == 9 for e in ("0.25", "0.4"))
+      and all(rs[e]["n_certified_cycles_persistence"]
+              > rs[e]["n_certified_cycles_enclosure"] for e in rs))
 check("scale floor: 0.5 x fallback tessera width 6.0 px = 3.0 px (run.py)",
       "FLOOR_F = 0.5" in run_py and "6.0" in run_py)
 check("all 30 real crops are 512x512 (paper Setup; Appendix E runtime unit)",

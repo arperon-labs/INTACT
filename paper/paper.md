@@ -42,7 +42,7 @@ the certified foreground, was genuinely unsound (H₁ is not monotone under
 foreground growth), and we report the counterexample, the catch, and the
 fix as a section of the method, not a footnote. A worst-case-exhaustive
 soundness harness attacks all four class-valued quantities — coverage, the
-fifth, is a pixel fraction with no per-instance support — at the two
+which is a pixel fraction with no per-instance support — at the two
 deterministic extremes; on real model outputs it reports **0 violations in
 16,675,936 checks**. On 30 real mosaic
 crops through a frozen zero-shot grout-segmentation model the certificate
@@ -608,8 +608,9 @@ attacked at both extremes, and the regression suite now encodes the exact
 counterexample: ring-over-POSSIBLE is *not* certified;
 ring-over-CERT_BG is certified and survives the attack; a planted unsound
 cycle is caught. The equivalence of the enclosure computation with cubical
-image-persistence (§3.5) was pre-registered and verified afterwards as
-an independent cross-check on the fixed definition.
+image-persistence (§3.5) was pre-registered and checked afterwards as an
+independent cross-check on the fixed definition; it held on the regression
+cases and was later refuted as a general identity (§5.5).
 
 ### 4.5 Provenance
 
@@ -773,7 +774,7 @@ tracks, registering the induced monotonicity of the coverage column). This is th
 graded extension of §8: the sandwich family over ε *is* a nested
 (α-graded) structure already.
 
-### 5.5 Persistence vs enclosure: an equivalence that holds only locally
+### 5.5 Persistence vs enclosure: a registered equivalence, refuted
 
 We pre-registered the two computations of §3.5 as equivalent. That is
 confirmed on the regression cases (0 / 1 / 9 on ring-over-POSSIBLE /
@@ -785,15 +786,17 @@ enclosure applies the ROI and scale floor: on noisy toy maps at ε = 0.40,
 persistence 1.38 vs floored enclosure 0.04 (per-map means), the difference
 being sub-floor debris the definition excludes. Enclosure exceeds
 persistence where a POSSIBLE channel subdivides one cavity into several
-guaranteed-background regions (§3.5); this occurs on real `p` at the larger
-budgets. The equivalence therefore holds exactly when each enclosed cavity
+guaranteed-background regions (§3.5). On real `p` this happens on 9 of the
+30 crops at ε = 0.25 and again at ε = 0.40 — but never in the aggregate:
+the cohort means in Table 2 keep persistence above enclosure at every
+budget, so the second direction is visible only per crop. The equivalence therefore holds exactly when each enclosed cavity
 contains a single CERT_BG component, and not otherwise. The enclosure
 column remains the headline count — it is the localisable, per-region
 certificate — and the persistence column is reported alongside it as the
 rank bound, not as the same number measured twice.
 
-The identity goes further, and we pre-registered it before running the
-check: the persistence-form count
+A second, different identity does hold, and we pre-registered it before
+running the check: the persistence-form count
 at *every* swept ε equals the number of points of `p`'s own superlevel
 diagram straddling the window `[½−ε, ½+ε]` — verified exactly on every
 crop and every ε (a registered check; §10), so the entire ε-sweep of
@@ -909,13 +912,13 @@ writing `F_t = {p ≥ t}` for the closed superlevel filtration of the score
 map and `F°_t = {p > t}` for its open counterpart, the *persistence-form*
 count of §3.5 is
 
-> `rank H1(F°_{½+ε} → F_{½−ε})`
+> `rank H1(F°_{½+ε} → F°_{½−ε})`
 
 — by the standard rank formula, the number of points of `p`'s superlevel
 persistence diagram with birth `> ½+ε` and death `< ½−ε`, i.e. alive across
 the entire window `[½−ε, ½+ε]`. The strict inequality at the source end is
-exactly `CERT_FG = {p−ε > ½}`, and the target end `F_{½−ε}` is exactly
-`~CERT_BG` under the non-strict background test of §2; the headline
+exactly `CERT_FG = {p−ε > ½}`; the target end is open too, because the
+non-strict background test of §2 makes `~CERT_BG = {p+ε > ½} = {p > ½−ε}`; the headline
 enclosure count is this rank only when each cavity holds a single CERT_BG
 component (§3.5, §5.5). The stability theorem
 [cohensteiner2007stability] recovers exactly this number as a lower bound:
@@ -1129,8 +1132,9 @@ construction that breaks them. The wording of every guarantee in Table 1
 is locked in a guarantee-statement file that this paper's claims are
 checked against, and that file carries the same two revisions. Tables 2–3 are regenerated from the
 committed result files by `tables.py`; figures by `make_figs.py`;
-`check_numbers.py` traces every numeral in this paper to its source file
-or derivation. Test suite: 21/21, including the planted-unsound and
+`check_numbers.py` traces every numeral in the markdown master to its
+source file or derivation, and `check_sync.py` checks that the markdown and
+the typeset paper carry the same prose in both directions. Test suite: 21/21, including the planted-unsound and
 counterexample regressions.
 
 **AI involvement.** The experimental campaign was executed by an agentic
@@ -1177,7 +1181,7 @@ verification against primary sources. No pending placeholders remain.)*
 ## Appendix A — Per-crop distributions, and how the tables are rounded
 
 Tables 2 and 3 report per-crop *means*; this appendix gives the underlying
-spread. Figure A.1 shows the per-crop distribution of coverage and
+spread. The worst-crop figure shows the per-crop distribution of coverage and
 certified-connected length across the 30 real crops at each ε (box = IQR,
 whiskers = range), with the cohort minimum marked — the worst-case floors
 quoted in §5.1 are read off it, and they fall on *different* crops for the

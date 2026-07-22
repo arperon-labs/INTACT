@@ -91,7 +91,7 @@ $\beta_1$ of the certified foreground, was genuinely unsound ($H_1$ is not
 monotone under foreground growth), and we report the counterexample, the
 catch, and the fix as a section of the method, not a footnote. A
 worst-case-exhaustive soundness harness attacks all four class-valued quantities --- coverage,
-the fifth, is a pixel fraction with no per-instance support --- at the two
+which is a pixel fraction with no per-instance support --- at the two
 deterministic
 extremes; on real model outputs it reports \textbf{0 violations in
 16{,}675{,}936 checks}. On 30 real mosaic crops through a
@@ -772,8 +772,9 @@ now encodes the exact counterexample: ring-over-$\POSS$ is \emph{not}
 certified; ring-over-$\CBG$ is certified and survives the attack; a
 planted unsound cycle is caught. The equivalence of the enclosure
 computation with cubical image-persistence (\S\ref{sec:cycles}) was
-registered and verified afterwards as an independent cross-check on the
-fixed definition.
+pre-registered and checked afterwards as an independent cross-check on the
+fixed definition; it held on the regression cases and was later refuted as
+a general identity (\S\ref{sec:hc4}).
 
 \subsection{Provenance}
 The unsoundness was found on 2026-07-12 by an adversarial-verification
@@ -803,8 +804,8 @@ mosaic masks from our own generator with simulated scores
 \]
 --- retained strictly as a validation track
 (\S\ref{sec:toy}). Sweep and conventions as in \S\ref{sec:setting}; seeds
-fixed; the toy run that carries the (persistence
-cycles, connectivity) is the run reported in Table~\ref{tab:toy}. The
+fixed. Table~\ref{tab:toy} reports the toy run that carries the
+persistence-cycle and connectivity columns. The
 regression suite --- including the planted-unsound and counterexample
 cases --- passes (\S\ref{sec:repro}).
 
@@ -952,8 +953,8 @@ registers the induced monotonicity of the coverage column). This is the hook for
 \S\ref{sec:future}: the sandwich family over $\eps$ \emph{is} a nested
 ($\alpha$-graded) structure already.
 
-\subsection{Persistence vs enclosure: an equivalence that holds only
-locally}\label{sec:hc4}
+\subsection{Persistence vs enclosure: a registered equivalence,
+refuted}\label{sec:hc4}
 We pre-registered the two computations of \S\ref{sec:cycles} as
 equivalent. That is confirmed on the regression cases ($0/1/9$ on
 ring-over-$\POSS$ / ring-over-$\CBG$ / $3\times 3$ grid of holes;
@@ -966,14 +967,18 @@ maps at $\eps=0.40$, persistence 1.38 vs floored enclosure 0.04 (per-map
 means), the difference being sub-floor debris the definition excludes.
 Enclosure exceeds persistence where a $\POSS$ channel subdivides one
 cavity into several guaranteed-background regions
-(\S\ref{sec:cycles}); this occurs on real $p$ at the larger budgets. The
+(\S\ref{sec:cycles}). On real $p$ this happens on 9 of the 30 crops at
+$\eps=0.25$ and again at $\eps=0.40$ --- but never in the aggregate: the
+cohort means in Table~\ref{tab:real} keep persistence above enclosure at
+every budget, so the second direction is visible only per crop. The
 equivalence therefore holds exactly when each enclosed cavity contains a
 single $\CBG$ component, and not otherwise. The enclosure column remains
 the headline count --- it is the localisable, per-region certificate ---
 and the persistence column is reported alongside it as the rank bound,
 not as the same number measured twice.
 
-The identity goes further (pre-registered before the check ran): the persistence-form count
+A second, different identity does hold, and was pre-registered before the
+check ran: the persistence-form count
 at \emph{every} swept $\eps$ equals the number of points of $p$'s own
 superlevel diagram straddling the window $[\tfrac12-\eps, \tfrac12+\eps]$
 --- verified exactly on every crop and every $\eps$
@@ -1120,14 +1125,15 @@ one: writing $F_t = \{p \ge t\}$ for the closed superlevel filtration of
 the score map and $F^{\circ}_t = \{p > t\}$ for its open counterpart, the
 \emph{persistence-form} count of \S\ref{sec:cycles} is
 \[
-  \operatorname{rank} H_1(F^{\circ}_{1/2+\eps} \to F_{1/2-\eps})
+  \operatorname{rank} H_1(F^{\circ}_{1/2+\eps} \to F^{\circ}_{1/2-\eps})
 \]
 --- by the standard rank formula, the number of points of $p$'s superlevel
 persistence diagram with birth $> \tfrac12+\eps$ and death
 $< \tfrac12-\eps$, i.e.\ alive across the entire window
 $[\tfrac12-\eps, \tfrac12+\eps]$. The strict inequality at the source end
-is exactly $\CFG = \{p-\eps > \tfrac12\}$, and the target end is exactly
-$\lnot\CBG$ under the non-strict background test of \S\ref{sec:setting};
+is exactly $\CFG = \{p-\eps > \tfrac12\}$; the target end is open too,
+because the non-strict background test of \S\ref{sec:setting} makes
+$\lnot\CBG = \{p+\eps > \tfrac12\} = \{p > \tfrac12-\eps\}$;
 the headline enclosure count is this rank only when each cavity holds a
 single $\CBG$ component (\S\ref{sec:cycles}, \S\ref{sec:hc4}). The stability theorem
 \citep{cohensteiner2007stability} recovers exactly this number as a lower
@@ -1151,7 +1157,9 @@ and it is what we compute; \S\ref{sec:correction} is the story of what
 happens when this distinction is missed. Second, completeness and
 witnesses: stability is a one-way inequality, whereas
 Proposition~\ref{prop:sandwich} characterises the reachable set exactly,
-so every non-certified hole ships with an explicit in-budget attack mask
+so every hole that fails the straddle criterion ships with an explicit
+in-budget attack mask (features excluded by the ROI or the scale floor are
+filtered out by definition, not defeated by an adversary)
 (filled at $M_{\max}$ or breached at $M_{\min}$). Third, scope: the
 connectivity class --- designated endpoints staying in one component ---
 plus coverage and abstention are not functionals of any persistence
@@ -1364,8 +1372,9 @@ this paper's claims are checked against, and that file carries the same
 two revisions. Tables~\ref{tab:real} and
 \ref{tab:toy} are regenerated from the committed result files by
 \texttt{tables.py}; figures by \texttt{make\_figs.py};
-\texttt{check\_numbers.py} traces every numeral in this paper to its
-source file or derivation. Test suite: 21/21, including the
+\texttt{check\_numbers.py} traces every numeral in the markdown master to
+its source file or derivation, and \texttt{check\_sync.py} checks that the
+markdown and the typeset paper carry the same prose in both directions. Test suite: 21/21, including the
 planted-unsound and counterexample regressions.
 
 \paragraph{AI involvement.} The experimental campaign was executed by an

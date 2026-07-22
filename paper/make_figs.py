@@ -25,7 +25,11 @@ HERE = Path(__file__).resolve().parent
 # root (parents[3]), which raises IndexError for any cloner.
 _EXTERNAL = Path(os.environ.get("INTACT_EXTERNAL_DATA",
                                 HERE.parents[0] / "external-data"))
-EXP = HERE.parents[1] / "experiments" / "topocert"
+# RELEASE ADAPTATION - results/ and experiments/ are siblings of paper/ here,
+# whereas the source tree keeps both under experiments/topocert/. Do not sync
+# this file by wholesale copy.
+EXP = HERE.parents[0] / "experiments"
+RES = HERE.parents[0] / "results"
 FIGS = HERE / "figs"
 EPS = [0.02, 0.05, 0.1, 0.15, 0.25, 0.4]
 
@@ -46,8 +50,8 @@ def _save(fig, name):
 # ---- Fig 1: certified fractions vs eps (two panels, one y-scale) ---------
 def fig_sweep():
     real = json.loads(
-        (EXP / "results_real_hardened.json").read_text())["sweep"]
-    toy = json.loads((EXP / "results_toy_hardened.json").read_text())["sweep"]
+        (RES / "results_real_hardened.json").read_text())["sweep"]
+    toy = json.loads((RES / "results_toy_hardened.json").read_text())["sweep"]
     fig, axes = plt.subplots(1, 2, figsize=(7.2, 2.9), sharey=True)
 
     # LEFT: T-real (30 crops) — coverage vs connectivity is a MODEST 1.7x gap
@@ -581,7 +585,7 @@ def fig_worstcrop():
     the 30 real crops at each eps (box = IQR, whiskers = full range). The
     worst crop (min) is marked: a worst-case paper's honest headline is the
     floor, not the mean, and it shows the result is not driven by outliers."""
-    sw = json.loads((EXP / "results_real_hardened.json").read_text())["sweep"]
+    sw = json.loads((RES / "results_real_hardened.json").read_text())["sweep"]
     fig, axes = plt.subplots(1, 2, figsize=(7.2, 3.1), sharex=True, sharey=True)
     panels = [("coverage", "coverage", BLUE),
               ("conn_len_frac", "certified-connected length", GREEN)]
@@ -626,7 +630,7 @@ def fig_graded():
     import run
     # representative crop, not cherry-picked: the one whose certified-cycle
     # count at eps=0.02 is closest to the 30-crop cohort mean
-    cyc = json.loads((EXP / "results_real_hardened.json").read_text())[
+    cyc = json.loads((RES / "results_real_hardened.json").read_text())[
         "sweep"]["0.02"]["per_crop"]["n_cycles_enclosure"]
     idx = int(np.argmin(np.abs(np.asarray(cyc) - np.mean(cyc))))
     name, p = run.load_pmaps(idx + 1)[idx]
@@ -722,8 +726,8 @@ def fig_decoupling():
     story: coverage tracks Dice on both sets; the topological invariants
     scatter on DRIVE but slope up on CHASE's degenerate over-segmented maps
     (Dice~0.30). Spearman rho annotated per dataset."""
-    drive = json.loads((EXP / "results_drive.json").read_text())
-    chase = json.loads((EXP / "results_chase.json").read_text())
+    drive = json.loads((RES / "results_drive.json").read_text())
+    chase = json.loads((RES / "results_chase.json").read_text())
     qu_keys = [("coverage", "coverage (accuracy-linked)"),
                ("conn_seg_frac", "certified-connected fraction"),
                ("n_components", "certified $\\beta_0$ components"),
@@ -761,5 +765,10 @@ if __name__ == "__main__":
     fig_pipeline()
     fig_decoupling()
     fig_worstcrop()
-    fig_hero()
-    fig_vessels()
+    try:
+        fig_vessels()
+    except (IndexError, FileNotFoundError, OSError) as e:
+        print(f"skipped fig_vessels: retinal source images not present "
+              f"({type(e).__name__}). Set INTACT_EXTERNAL_DATA if you have "
+              f"DRIVE/CHASE_DB1; the committed figs/fig_vessels.pdf is used "
+              f"otherwise.")

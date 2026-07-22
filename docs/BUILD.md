@@ -33,7 +33,7 @@ pdflatex paper && bibtex paper && pdflatex paper && pdflatex paper
 
 ## Outputs
 
-- `paper.pdf` (23 pp incl. appendices and references) and `paper.md` — the
+- `paper.pdf` (includes appendices and references) and `paper.md` — the
   same content, with `paper.md` as the markdown master that `check_numbers.py`
   traces
 - `generated/` tables and `figs/` are build products, but are committed so the

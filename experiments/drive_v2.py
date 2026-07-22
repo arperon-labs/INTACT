@@ -22,6 +22,11 @@ from scipy.stats import spearmanr
 from skimage.filters import frangi, threshold_otsu
 
 HERE = Path(__file__).resolve().parent
+ROOT = HERE.parents[0]                      # repository root
+# Optional datasets that are NOT shipped. Repo-relative by default;
+# point INTACT_EXTERNAL_DATA at your own tree to use data held elsewhere.
+EXTERNAL = Path(os.environ.get("INTACT_EXTERNAL_DATA",
+                               ROOT / "external-data"))
 sys.path.insert(0, str(HERE))
 from sandwich import cert_sets, useful_eps  # noqa: E402
 from topo import certified_topology, soundness_check  # noqa: E402
