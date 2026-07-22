@@ -1,0 +1,26 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# LaTeX build artefacts (paper.pdf itself IS committed)
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+*.toc
+*.synctex.gz
+
+# Regenerable intermediate caches
+experiments/chase_pmaps/
+experiments/plots/
+experiments/gallery/
+
+# Never commit credentials or local env
+*.env
+kaggle.json
+*.pth
+*.ckpt

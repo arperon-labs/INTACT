@@ -1,0 +1,9 @@
+# INTACT / TOPOCERT — certification is CPU-only.
+numpy>=1.24
+opencv-python>=4.8
+scikit-image>=0.22
+scipy>=1.11
+gudhi>=3.9          # cubical image-persistence (certified 1-cycles)
+matplotlib>=3.7     # figures only
+Pillow>=10.0        # retinal dataset loading only
+pytest>=7.4         # tests only

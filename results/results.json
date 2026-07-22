@@ -1,0 +1,69 @@
+{
+ "track": "T-real",
+ "PROVISIONAL": false,
+ "H_C1_soundness_violations": 0,
+ "H_C1_pass": true,
+ "sweep": {
+  "0.02": {
+   "grout_len_certainly_fg_frac": 0.987370529443279,
+   "component_covg_proxy_frac": 1.0,
+   "abstain_frac": 0.016189734141031902,
+   "n_certified_components": 20.916666666666668,
+   "n_certified_tessera_cores": 591.3333333333334,
+   "n_certified_cycles": 530.7916666666666
+  },
+  "0.05": {
+   "grout_len_certainly_fg_frac": 0.9695309402365554,
+   "component_covg_proxy_frac": 0.9918153059018563,
+   "abstain_frac": 0.04055070877075195,
+   "n_certified_components": 20.958333333333332,
+   "n_certified_tessera_cores": 593.25,
+   "n_certified_cycles": 519.7083333333334
+  },
+  "0.1": {
+   "grout_len_certainly_fg_frac": 0.9381329501078101,
+   "component_covg_proxy_frac": 0.8592695824531317,
+   "abstain_frac": 0.08185799916585286,
+   "n_certified_components": 23.375,
+   "n_certified_tessera_cores": 596.5416666666666,
+   "n_certified_cycles": 490.4583333333333
+  },
+  "0.15": {
+   "grout_len_certainly_fg_frac": 0.9025579115916335,
+   "component_covg_proxy_frac": 0.605078285601588,
+   "abstain_frac": 0.12532329559326172,
+   "n_certified_components": 25.875,
+   "n_certified_tessera_cores": 598.4166666666666,
+   "n_certified_cycles": 459.625
+  },
+  "0.25": {
+   "grout_len_certainly_fg_frac": 0.8149033958698011,
+   "component_covg_proxy_frac": 0.22726246979474563,
+   "abstain_frac": 0.22339582443237305,
+   "n_certified_components": 34.125,
+   "n_certified_tessera_cores": 591.5,
+   "n_certified_cycles": 381.9583333333333
+  },
+  "0.4": {
+   "grout_len_certainly_fg_frac": 0.5924163576779624,
+   "component_covg_proxy_frac": 0.04806338720963704,
+   "abstain_frac": 0.44771560033162433,
+   "n_certified_components": 51.291666666666664,
+   "n_certified_tessera_cores": 516.0833333333334,
+   "n_certified_cycles": 202.04166666666666
+  }
+ },
+ "useful_eps_calibrated": 0.4182535260915756,
+ "useful_eps_used": 0.4,
+ "H_C2_nonvacuity_at_useful_eps": {
+  "grout_len_certainly_fg_frac": 0.5924163576779624,
+  "component_covg_proxy_frac": 0.04806338720963704,
+  "abstain_frac": 0.44771560033162433,
+  "n_certified_components": 51.291666666666664,
+  "n_certified_tessera_cores": 516.0833333333334,
+  "n_certified_cycles": 202.04166666666666,
+  "pass": true
+ },
+ "H_C3_nesting_monotone_pass": true,
+ "KILL_abstain_floods": false
+}
