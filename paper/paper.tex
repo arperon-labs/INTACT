@@ -71,7 +71,7 @@ for thresholded segmentation score maps. An $\ell_\infty$ uncertainty
 band of radius $\eps$ around a frozen score map $p$ determines ---
 exactly --- a lattice interval of reachable binary masks, between the certainly-foreground core
 $\CFG=\{p-\eps>\tfrac12\}$ and the complement of the certainly-background
-core $\CBG=\{p+\eps<\tfrac12\}$. Over this interval we prove a two-mask
+core $\CBG=\{p+\eps\le\tfrac12\}$. Over this interval we prove a two-mask
 certification principle: a finite conjunction of monotone predicates
 holds on every reachable mask iff it holds at the interval's two extremes
 --- and both extremes are individually necessary, a minimal check that no
@@ -164,8 +164,10 @@ Contributions, each with its qualifier:
   (\S\ref{sec:quantities}): certainly-foreground coverage; certified
   $\beta_0$ components; certified enclosed tesserae; a strict
   certified-connectivity fraction; and certified 1-cycles as
-  \emph{unfillable holes} --- the rank of the image
-  $H_1(\CFG\hookrightarrow\lnot\CBG)$ computed by cubical persistence. We
+  \emph{unfillable holes}, reported as the count of enclosed
+  guaranteed-background regions and cross-checked against the rank of the
+  image $H_1(\CFG\hookrightarrow\lnot\CBG)$ --- two related quantities that
+  are not equal in general (\S\ref{sec:cycles}). We
   keep coverage and connectivity as two separate reported numbers, because
   they are different quantities --- a modest 1.2--1.7$\times$ apart on real
   outputs, an order of magnitude only on the near-tautological toy track
@@ -515,12 +517,13 @@ The two counts agree \textbf{exactly} on the clean regression cases
 (ring-over-$\POSS$ $\to 0$; ring-over-$\CBG$ $\to 1$; a $3\times 3$ grid
 of enclosed cells $\to 9$; the planted unsound cycle $\to$ not certified)
 --- we pre-registered this equivalence as a prediction before
-the persistence code ran. On noisy maps the raw persistence count exceeds
-the enclosure count by the holes the enclosure count filters out ---
-sub-scale-floor and outside the ROI --- since persistence is unfiltered;
-the decomposition is validated on the toy track
-(\S\ref{sec:hc4}). Localisation stays with the enclosure form: persistence
-gives the certified \emph{count}, not per-cycle generators.
+the persistence code ran, and it holds wherever each enclosed cavity
+contains a single $\CBG$ component. On noisy maps the two counts separate
+in both directions --- persistence above enclosure where enclosure applies
+its ROI and scale floor, enclosure above persistence where a $\POSS$
+channel subdivides one cavity --- and \S\ref{sec:hc4} gives the measured
+decomposition. Localisation stays with the enclosure form: persistence
+gives a certified \emph{count}, not per-cycle generators.
 
 This definition is the \emph{corrected} one. It is not what we first built
 --- \S\ref{sec:correction} reports what we first built, why it was wrong,
@@ -552,7 +555,8 @@ contained in the foreground of every reachable mask (quantities 1, 4);
 connectivity is preserved under superset (quantity 2); $\CBG$ is contained
 in the background of every reachable mask (quantity 3); and an unfillable
 hole's wall and interior are pinned by both containments at once
-(quantity 5). PEDANTIC widening only shrinks CERT sets --- the safe
+(quantity 5). The outward one-ulp widening of \S\ref{sec:setting} only
+shrinks CERT sets --- the safe
 direction --- and the strict inequalities settle exact boundary ties
 conservatively.
 
@@ -613,7 +617,7 @@ and $M_{\max}$ respectively, the direction in which the harness would
 reject a support or core straying into $\POSS$), and a cycle forces both
 at once. Since $M_{\min}$ is the worst case of every upward-monotone
 conjunct and $M_{\max}$ of every downward one, neither extreme dominates
-the other: the neither can stand in for the other and the check is \emph{minimal} at two
+the other: neither can stand in for the other, and the check is \emph{minimal} at two
 masks --- each extreme is itself a reachable mask on which the
 dropped-extreme harness fails, so omitting either forfeits worst-case
 certainty. Random sampling cannot restore it: by monotonicity $M_{\min}$
@@ -646,8 +650,8 @@ certificate holds at $M_{\min}$ (hole open) and fails only at $M_{\max}$
 pinched bar's segment spans at $M_{\max}$ and fails only at $M_{\min}$
 (pinch cut), so dropping $M_{\min}$ falsely certifies it. Dashed outline:
 the POSSIBLE region the adversary controls. By
-Lemma~\ref{lem:extremes} each failure localizes at exactly one extreme ---
-never strictly between them.}
+Lemma~\ref{lem:extremes} each failure localises at exactly one extreme,
+never strictly interior.}
 \label{fig:tightness}
 \end{figure}
 
@@ -1343,11 +1347,13 @@ break.
 \section{Reproducibility and disclosure}\label{sec:repro}
 
 \paragraph{Reproducibility.} The experiment directory is
-registration-first in git history: the registry (hypotheses, adversaries,
-kill conditions, fixed conditions including the $\eps$ sweep, connectivity
-conventions, scale floor, and seeds) precedes the run code. Corrections
-are appended as addenda that preserve the original claims verbatim rather
-than edited in place, and there are now two: the unsound $\beta_1$ cycle
+registration-first: the registry records each hypothesis with its
+adversary, kill condition, and fixed conditions --- the $\eps$ sweep,
+connectivity conventions, scale floor, and seeds --- dated at the point of
+registration and before the corresponding numbers were produced. The
+registry ships with the code, so the registrations, and the order in which
+they were made, can be read directly. Corrections are appended as addenda
+that preserve the original claims verbatim rather than edited in place, and there are now two: the unsound $\beta_1$ cycle
 certificate of \S\ref{sec:correction}, and the refutation of the
 registered persistence/enclosure equivalence (\S\ref{sec:hc4}). Both were
 found the same way --- a registered claim checked against a case its own
@@ -1450,9 +1456,9 @@ $q \sim U(0.1, 0.9)$, iid per pixel). Detection probabilities are computed
 exactly (closed form for the ring; full pinch-block enumeration for the
 bar) and Monte-Carlo cross-checked; the committed
 \texttt{results\_random\_baseline.json} shows fair-coin ring detection
-equal to $2^{-c}$ exactly, the harness sampler decaying exponentially with a slower base
-rather than exponentially (an advantage of biased sampling that still
-vanishes as $c$ grows), and every planted violation caught at exactly one
+equal to $2^{-c}$ exactly, and the harness sampler decaying exponentially too, but with a
+slower base --- $0.9$ rather than $\tfrac12$, times a $1/(c+1)$ factor ---
+an advantage of biased sampling that still vanishes as $c$ grows, and every planted violation caught at exactly one
 extreme --- rings at $M_{\max}$, bars at $M_{\min}$ --- never the other
 (Figure~\ref{fig:missrate}).
 

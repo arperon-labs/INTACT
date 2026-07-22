@@ -6,9 +6,8 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-# NOTE: release layout - tests/ and experiments/ are siblings at the repo root.
-# This anchor differs from the source tree's; do not sync this file by
-# wholesale copy or the imports break.
+# RELEASE ADAPTATION - tests/ and experiments/ are siblings here; do not
+# sync this file by wholesale copy or every import breaks.
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "experiments"))
 

@@ -117,8 +117,10 @@ Contributions, each with its qualifier:
 3. **Five certified quantities, each with adversary and caveat** (§3):
    certainly-foreground coverage; certified β₀ components; certified
    enclosed tesserae; a strict certified-connectivity fraction; and
-   certified 1-cycles as *unfillable holes* — the rank of the image
-   `H1(CERT_FG ↪ ~CERT_BG)` computed by cubical persistence. We keep
+   certified 1-cycles as *unfillable holes*, reported as the count of
+   enclosed guaranteed-background regions and cross-checked against the
+   rank of the image `H1(CERT_FG ↪ ~CERT_BG)` — two related quantities
+   that are not equal in general (§3.5). We keep
    coverage and connectivity as two separate reported numbers, because
    they are different quantities — a modest 1.2–1.7× apart on real outputs,
    an order of magnitude only on the near-tautological toy track (§5.2).
@@ -268,12 +270,8 @@ root of the median area of the 4-connected background components of the
 ε-*independent* prediction `{p > ½}` (components of area ≥ 9 px; fallback
 width 6.0 px, hence a 3.0 px floor); on the retinal tracks it is a fixed
 1.0 px, since vessel calibre rather than tessera size sets the scale.
-Foreground uses 8-connectivity, background 4-connectivity (the
-standard dual pairing, so that curves separate). Certificates pass a
-region-of-interest mask and a physical scale floor — floor = 0.5 × the
-tessera-width scale, where tessera width is the square root of the median
-tessera area (areas ≥ 9 px; fallback 6.0 px) — so that certified counts
-concern meaningful structure rather than single-pixel debris. All metrics
+Foreground uses 8-connectivity, background 4-connectivity (the standard
+dual pairing, so that curves separate). All metrics
 are reported as absolute counts alongside any fraction; ratios never stand
 alone. The proofs are per-pixel or lattice-theoretic throughout, so
 Proposition 1 and the coverage, component, tessera-core and per-segment
@@ -309,7 +307,7 @@ stronger is asserted anywhere.
 | 1 | Coverage: certainly-foreground fraction of predicted grout length | every CERT_FG pixel is foreground in every reachable mask | per-pixel ℓ∞-ε | a **coverage** statement, NOT connectivity: a covered line pinched through POSSIBLE can still split; reported as fraction and absolute length |
 | 2 | Certified β₀ components: connected components of CERT_FG (8-conn) | each is connected in every reachable mask (supersets preserve connectivity) | any reachable mask (all are supersets) | these are CERT_FG's *own* components (absolute count), not the components of `{p>½}` |
 | 3 | Certified enclosed tesserae: components of CERT_BG (4-conn), ROI + scale-floor filtered | each stays fully background in every reachable mask | any reachable mask | certifies a tessera **core**, not the whole tile |
-| 4 | Certified-connected grout fraction: skeleton segments lying entirely in CERT_FG | such a segment's endpoints stay connected under any ε-perturbation | all-POSSIBLE→background | strictly ≤ coverage; a single POSSIBLE pinch disqualifies a segment; strictly ≤ coverage; modest on real outputs (1.2–1.7×), order-of-magnitude on toy |
+| 4 | Certified-connected grout fraction: skeleton segments lying entirely in CERT_FG | such a segment's endpoints stay connected under any ε-perturbation | all-POSSIBLE→background | strictly ≤ coverage; a single POSSIBLE pinch disqualifies a segment; modest on real outputs (1.2–1.7×), order-of-magnitude on toy |
 | 5 | Certified 1-cycles, reported two ways: **enclosed regions** (CERT_BG components walled by CERT_FG, ROI + scale-floor filtered — the headline count) and the **image rank** `rank H1(CERT_FG ↪ ~CERT_BG)` (cubical persistence, unfiltered) | each enclosed region is an unfillable, unleakable hole — wall guaranteed foreground, interior guaranteed background — in every reachable mask; the rank additionally lower-bounds `β₁(M)` for every reachable `M` | both deterministic extremes | the two are **not** equal in general (§3.5): the rank is smaller when one cavity holds several CERT_BG components split by POSSIBLE, and larger where the enclosure count applies its ROI/scale floor. Only the rank is a Betti bound; only the enclosure form localises |
 
 ### 3.1 Coverage (certainly-foreground fraction)
@@ -405,11 +403,13 @@ drawn for β₀ in §3.2.
 The two counts agree **exactly** on the clean regression cases
 (ring-over-POSSIBLE → 0; ring-over-CERT_BG → 1; a 3×3 grid of enclosed
 cells → 9; the planted unsound cycle → not certified) — we pre-registered this
-equivalence as a prediction before writing the persistence code. On noisy maps the raw persistence count exceeds the enclosure count by
-the holes the enclosure count filters out — sub-scale-floor and outside the
-ROI — since persistence is unfiltered; the decomposition is validated on the
-toy track (§5.5). Localisation stays with the enclosure form:
-persistence gives the certified *count*, not per-cycle generators.
+equivalence as a prediction before writing the persistence code, and it holds
+wherever each enclosed cavity contains a single CERT_BG component. On noisy
+maps the two counts separate in both directions — persistence above
+enclosure where enclosure applies its ROI and scale floor, enclosure above
+persistence where a POSSIBLE channel subdivides one cavity — and §5.5 gives
+the measured decomposition. Localisation stays with the enclosure form:
+persistence gives a certified *count*, not per-cycle generators.
 
 This definition is the *corrected* one. It is not what we first built —
 §4 reports what we first built, why it was wrong, and how it was caught.
@@ -429,7 +429,8 @@ of Proposition 1: CERT_FG is contained in the foreground of every
 reachable mask (quantities 1, 4); connectivity is preserved under superset
 (quantity 2); CERT_BG is contained in the background of every reachable
 mask (quantity 3); and an unfillable hole's wall and interior are pinned
-by both containments at once (quantity 5). PEDANTIC widening only shrinks
+by both containments at once (quantity 5). The outward one-ulp widening of
+§2 only shrinks
 CERT sets — the safe direction — and the strict inequalities settle exact
 boundary ties conservatively.
 
@@ -482,8 +483,8 @@ background-core classes only fix *which* extreme is worst (`M_min` and
 `M_max` respectively, the direction in which the harness would reject a
 support or core straying into POSSIBLE), and a cycle forces both at once.
 Since `M_min` is the worst case of every upward-monotone conjunct and
-`M_max` of every downward one, neither extreme dominates the other: the
-neither can stand in for the other and the check is *minimal* at two masks — each
+`M_max` of every downward one, neither extreme dominates the other:
+neither can stand in for the other, and the check is *minimal* at two masks — each
 extreme is itself a reachable mask on which the dropped-extreme harness
 fails, so omitting either forfeits worst-case certainty. Random sampling
 cannot restore it: by monotonicity `M_min` lies in *every* non-empty
@@ -656,13 +657,16 @@ The certificate then turns out to be far from vacuous on real outputs:
 
 **Table 2 — T-real sweep** (frozen zero-shot model, 30 crops; per-crop
 means; `generated/table_real.md` regenerates this from the committed
-results file). Per §2 no ratio stands alone, so the denominators, which are
-ε-independent, are: coverage and conn-len are over a mean skeleton length of
-24,728.9 px per crop; conn-seg is over 2,739.8 segments per crop; abstain is
-over the ROI, here the whole 512×512 crop. The ε-varying numerators at
-ε = 0.10 and 0.40 are certified length 23,408.1 and 14,969.8 px, and
-certified segments 2,173.2 and 1,003.5. Each tabled fraction is the mean of
-the per-crop ratios, not the ratio of the means.
+results file). Per §2 no ratio stands alone. Coverage is certified skeleton
+length over total skeleton length: 23,408.1 and 14,969.8 px at ε = 0.10 and
+0.40, over 24,728.9 px per crop. Conn-seg is 2,173.2 and 1,003.5 certified
+segments over 2,739.8. Conn-len is certified segment length over *total
+segment* length — a smaller denominator than the skeleton, since node
+clusters adjacent to no degree-2 interior belong to no segment — and its
+absolute pair is not persisted in the results file. Skeleton length and
+segment count are both ε-independent; abstain is over the ROI, here the
+whole 512×512 crop. Each tabled fraction is the mean of the per-crop ratios,
+not the ratio of the means.
 
 | ε | coverage | conn-len | conn-seg | #comp | #tess | #cyc-encl | #cyc-pers | abstain |
 |---|---|---|---|---|---|---|---|---|
@@ -1109,11 +1113,14 @@ enough that a certificate had every excuse to break.
 
 ## 10. Reproducibility and disclosure
 
-**Reproducibility.** The experiment directory is registration-first in git
-history: the registry (hypotheses, adversaries, kill conditions, fixed
-conditions including the ε sweep, connectivity conventions, scale floor,
-and seeds) precedes the run code. Corrections are appended as addenda that
-preserve the original claims verbatim rather than edited in place, and
+**Reproducibility.** The campaign is registration-first: the registry
+records each hypothesis with its adversary, kill condition, and fixed
+conditions — the ε sweep, connectivity conventions, scale floor, and seeds
+— dated at the point of registration and before the corresponding numbers
+were produced. The registry ships with the code, so the registrations, and
+the order in which they were made, can be read directly. Corrections are
+appended as addenda that preserve the original claims verbatim rather than
+edited in place, and
 there are now two: the unsound β₁ cycle certificate of §4, and the
 refutation of the registered persistence/enclosure equivalence (§5.5).
 Both were found the same way — a registered claim checked against a case
@@ -1231,10 +1238,10 @@ harness's own (per-mask `q ~ U(0.1, 0.9)`, iid per pixel). Detection
 probabilities are computed exactly (closed form for the ring; full
 pinch-block enumeration for the bar) and Monte-Carlo cross-checked; the
 committed `results_random_baseline.json` shows fair-coin ring detection
-equal to `2^{-c}` exactly, the harness sampler decaying exponentially with a
-slower base (0.9 rather than ½, times a `1/(c+1)` factor)
-rather than exponentially (an advantage of biased sampling that still
-vanishes as `c` grows), and every planted violation caught at exactly one
+equal to `2^{-c}` exactly, and the harness sampler decaying
+exponentially too, but with a slower base — `0.9` rather than `½`, times a
+`1/(c+1)` factor — an advantage of biased sampling that still vanishes as
+`c` grows, and every planted violation caught at exactly one
 extreme — rings at `M_max`, bars at `M_min` — never the other.
 
 ## Appendix D — Related-work delta table
