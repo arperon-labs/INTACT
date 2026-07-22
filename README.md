@@ -44,6 +44,7 @@ paper/         paper.tex / paper.md / paper.pdf, refs.bib, figures,
                  make_figs.py      all figures
                  tables.py         Tables 2-3 from the committed results
                  check_numbers.py  traces EVERY numeral in the paper to a source
+                 check_sync.py     paper.md prose vs. the built PDF
 experiments/   the certification library + experiment runners
                  sandwich.py       the ±ε sandwich (Proposition 1)
                  topo.py           certified quantities + soundness harness
@@ -70,6 +71,7 @@ NumPy/OpenCV/scikit-image/SciPy. All certification is **CPU-only**.
 ```bash
 pytest tests/ -q                       # 21 tests, ~2s
 python paper/check_numbers.py          # every numeral in the paper -> its source
+python paper/check_sync.py             # paper.md prose agrees with the built PDF
 ```
 
 `check_numbers.py` is the honesty gate: it re-derives the paper's statistics

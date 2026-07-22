@@ -11,7 +11,9 @@ import json
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-EXP = HERE.parents[1] / "experiments" / "topocert"
+# RELEASE ADAPTATION - the source tree keeps the JSONs beside the code in
+# experiments/topocert/; here they live in results/. Do not sync by copy.
+EXP = HERE.parents[0] / "results"
 OUT = HERE / "generated"
 EPS = ["0.02", "0.05", "0.1", "0.15", "0.25", "0.4"]
 
@@ -98,8 +100,8 @@ def main():
     (OUT / "table_toy.md").write_text(to_md(h, r))
     (OUT / "table_toy.tex").write_text(to_tex(
         h, r,
-        "T-toy (hardened re-emit, 24 synthetic maps): all columns incl.\\ "
-        "certified-connected fractions (1b) and persistence cycles (1a). "
+        "Toy track (24 synthetic maps): all columns, including the "
+        "certified-connected fractions and the persistence cycle counts. "
         "Toy $p$ is a blurred copy of the ground truth --- validation of "
         "the machinery, not evidence about real-model behaviour.",
         "tab:toy"))

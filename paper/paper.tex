@@ -313,7 +313,13 @@ number, the ``useful'' budget is calibration-defined: the median of the
 confidence margin $|p-\tfrac12|$ over uncertain pixels
 ($0<\text{margin}<\tfrac12$), per map, median across maps, snapped to the
 \emph{nearest} point of the swept grid. On the real track this gives $0.425 \to \eps=0.40$; the sweep
-is $\eps \in \{0.02, 0.05, 0.10, 0.15, 0.25, 0.40\}$.
+is $\eps \in \{0.02, 0.05, 0.10, 0.15, 0.25, 0.40\}$. Snapping to the
+nearest point can move $\eps$ down, which weakens the adversary and so
+makes certificates easier --- the one step in the pipeline that does not
+err toward abstention. It is guarded by the split-half stability of the
+estimator (\S\ref{sec:epsstab}), which selects the same grid point in 200
+of 200 resamples, and by the exactly-nested sweep (\S\ref{sec:nesting}),
+which shows what any mis-estimate would cost.
 
 \paragraph{Conventions (part of the certificate's definition, not post-hoc
 filters).}
@@ -925,9 +931,20 @@ certified-connected length 0.}
 \subsection{Nesting}\label{sec:nesting}
 Certificates over decreasing $\eps$ are monotone-nested ---
 $\CFG(\eps') \supseteq \CFG(\eps)$ for $\eps' \le \eps$, exact set
-containment, so every certified quantity is monotone along the sweep.
-Asserted as exact containment and verified on both tracks (registered
-prediction; it holds). This is the hook for the graded extension of
+containment, so every certified quantity that is a \emph{measure} of the
+certified sets --- coverage, certified length, abstain fraction --- is
+monotone along the sweep. Counts are not, and the tables show it:
+component and cavity counts are not monotone functionals of set inclusion
+(\S\ref{sec:generality}), so \#comp and \#tess move non-monotonically in
+Tables~\ref{tab:real} and \ref{tab:toy} as $\CFG$ fragments and $\CBG$
+merges. One topological count \emph{is} provably monotone: by the diagram
+identity of \S\ref{sec:hc4} the persistence-form cycle count at $\eps$ is
+the number of points of $p$'s fixed superlevel diagram straddling
+$[\tfrac12-\eps, \tfrac12+\eps]$, and widening $\eps$ can only shrink
+that set, so \#cyc-pers is non-increasing in $\eps$ --- on every crop
+individually, not merely in the mean. Exact set containment is asserted
+and unit-tested (a pre-registered prediction; it holds on both tracks, and
+registers the induced monotonicity of the coverage column). This is the hook for the graded extension of
 \S\ref{sec:future}: the sandwich family over $\eps$ \emph{is} a nested
 ($\alpha$-graded) structure already.
 
@@ -1095,14 +1112,20 @@ different problem, and it is the problem this paper addresses.
 
 \paragraph{Persistence stability, image persistence, and well groups.}
 Our certified-cycle count is a persistence quantity, and we say which
-one: writing $F_t = \{p \ge t\}$ for the superlevel filtration of the
-score map, the count of \S\ref{sec:cycles} is
+one: writing $F_t = \{p \ge t\}$ for the closed superlevel filtration of
+the score map and $F^{\circ}_t = \{p > t\}$ for its open counterpart, the
+\emph{persistence-form} count of \S\ref{sec:cycles} is
 \[
-  \operatorname{rank} H_1(F_{1/2+\eps} \to F_{1/2-\eps})
+  \operatorname{rank} H_1(F^{\circ}_{1/2+\eps} \to F_{1/2-\eps})
 \]
---- by the standard rank formula,
-the number of points of $p$'s superlevel persistence diagram alive across
-the entire window $[\tfrac12-\eps, \tfrac12+\eps]$. The stability theorem
+--- by the standard rank formula, the number of points of $p$'s superlevel
+persistence diagram with birth $> \tfrac12+\eps$ and death
+$< \tfrac12-\eps$, i.e.\ alive across the entire window
+$[\tfrac12-\eps, \tfrac12+\eps]$. The strict inequality at the source end
+is exactly $\CFG = \{p-\eps > \tfrac12\}$, and the target end is exactly
+$\lnot\CBG$ under the non-strict background test of \S\ref{sec:setting};
+the headline enclosure count is this rank only when each cavity holds a
+single $\CBG$ component (\S\ref{sec:cycles}, \S\ref{sec:hc4}). The stability theorem
 \citep{cohensteiner2007stability} recovers exactly this number as a lower
 bound: $\|p'-p\|_\infty \le \eps$ moves the diagram by at most $\eps$ in
 bottleneck distance, so every window-straddling point yields a hole in
@@ -1408,9 +1431,8 @@ not a persistence statement.
 \section{Soundness-check accounting}\label{app:accounting}
 Every emitted certified class is checked against 32 reachable masks: the
 two deterministic extremes plus 30 random reachable masks. The real-track
-total across 30 crops, the four hardened classes emitted by the parallel
-(components, tessera cores, corrected cycles, and connectivity
-segments), and the six-point $\eps$ sweep is
+total across 30 crops, the four certified classes (components, tessera
+cores, corrected cycles, and connectivity segments), and the six-point $\eps$ sweep is
 16{,}675{,}936 individual checks --- exactly $32 \times 521{,}123$ class
 instances --- with 0 violations. The check for a foreground class asserts
 connectivity and presence in the minimal mask; for a background core,
