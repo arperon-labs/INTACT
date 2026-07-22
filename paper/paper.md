@@ -1116,6 +1116,11 @@ enough that a certificate had every excuse to break.
 
 ## 10. Reproducibility and disclosure
 
+**Availability.** Code, the frozen score maps, every committed result file,
+the pre-registration record, and the sources of this paper are at
+<https://github.com/arperon-labs/INTACT> (Apache-2.0). Everything below can
+be checked there.
+
 **Reproducibility.** The campaign is registration-first: the registry
 records each hypothesis with its adversary, kill condition, and fixed
 conditions — the ε sweep, connectivity conventions, scale floor, and seeds
