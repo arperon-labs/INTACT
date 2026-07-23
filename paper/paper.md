@@ -2,6 +2,7 @@
 
 **Radoslav Lovecký**  ·  Arperon
 `info@arperon.com`
+DOI: [10.5281/zenodo.21507499](https://doi.org/10.5281/zenodo.21507499)
 
 *Preprint v1. Every citation key in brackets resolves in
 `refs.bib`, and every entry there was identity-verified against a primary
@@ -1118,8 +1119,9 @@ enough that a certificate had every excuse to break.
 
 **Availability.** Code, the frozen score maps, every committed result file,
 the pre-registration record, and the sources of this paper are at
-<https://github.com/arperon-labs/INTACT> (Apache-2.0). Everything below can
-be checked there.
+<https://github.com/arperon-labs/INTACT> (Apache-2.0), and the paper is
+archived at Zenodo, [doi:10.5281/zenodo.21507499](https://doi.org/10.5281/zenodo.21507499).
+Everything below can be checked there.
 
 **Reproducibility.** The campaign is registration-first: the registry
 records each hypothesis with its adversary, kill condition, and fixed

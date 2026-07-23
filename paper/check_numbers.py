@@ -361,6 +361,9 @@ text = re.sub(r"`[^`]*`", " ", text)
 # author metadata: an ORCID iD is an identifier, not a claim about results.
 # Matches both the displayed id and the orcid.org URL it links to.
 text = re.sub(r"(?:https?://orcid\.org/)?\d{4}-\d{4}-\d{4}-\d{3}[\dX]", " ", text)
+# likewise a Zenodo DOI: an identifier, not a claim. Matches the displayed
+# form, the doi: prefix, and the doi.org URL it links to.
+text = re.sub(r"(?:https?://doi\.org/|doi:)?10\.5281/zenodo\.\d+", " ", text)
 # section cross-references, headings, table/figure numbering are structural
 text = re.sub(r"(§+\s*|\bTable\s+|\bFigure\s+|\bProposition\s+|\bv)\d+(\.\d+)*",
               " ", text)

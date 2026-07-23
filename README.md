@@ -135,7 +135,7 @@ Preprint **v1**. If you use this work, please cite it:
   year         = {2026},
   publisher    = {Zenodo},
   version      = {v1},
-  doi          = {PENDING},
+  doi          = {10.5281/zenodo.21507499},
   url          = {https://github.com/arperon-labs/INTACT}
 }
 ```
