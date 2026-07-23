@@ -1,0 +1,18 @@
+# Deterministic line endings across platforms: store and check out text as LF,
+# so files are byte-identical everywhere (the LICENSE in particular must hash
+# to the canonical Apache-2.0 text on any clone).
+* text=auto eol=lf
+
+# The LICENSE is byte-canonical Apache-2.0; never let a platform touch it.
+LICENSE   text eol=lf
+NOTICE    text eol=lf
+
+# Binaries: never apply line-ending or other text filters (would corrupt them).
+*.pdf  binary
+*.png  binary
+*.npy  binary
+*.gif  binary
+*.tif  binary
+*.zip  binary
+*.pth  binary
+*.ckpt binary
