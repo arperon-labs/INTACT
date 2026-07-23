@@ -510,7 +510,7 @@ persistence rank lower-bounds $\beta_1(M)$ for every reachable $M$ (at
 $M=\CFG$ the two squares merge into a single hole). The enclosure count
 stays sound as a \emph{per-region} statement --- each region is
 guaranteed background and unleakable in every reachable mask, which is
-what the soundness harness verifies --- but it is not a Betti number and
+exactly what the soundness harness verifies --- but it is not a Betti number and
 must not be read as one. This is the degree-1 instance of the
 named-features-versus-rank-bound distinction drawn for $\beta_0$ earlier
 in this section.
@@ -604,8 +604,8 @@ the run before any headline number is emitted.
 
 \paragraph{Tightness (both extremes necessary).}
 Lemma~\ref{lem:extremes} makes the pair \emph{sufficient}; the certified
-classes make each extreme \emph{individually necessary}
-(Figure~\ref{fig:tightness}). Drop $M_{\max}$
+classes make each extreme \emph{individually necessary} (all four
+extreme-mask cells are rendered in Figure~\ref{fig:tightness}). Drop $M_{\max}$
 and Figure~\ref{fig:counterexample}'s fillable ring is falsely certified
 --- its cycle holds at $M_{\min}$ (wall present, interior open) yet is
 filled at $M_{\max}$ once the $\POSS$ interior is forced to foreground
@@ -891,7 +891,8 @@ The order-of-magnitude gap lives only on the near-tautological toy track,
 where at $\eps=0.40$ coverage is 0.500 versus certified-connected length
 \textbf{0.036} (segment fraction 0.062) --- a \textbf{${\sim}14\times$}
 collapse (Figure~\ref{fig:sweep} right; Figure~\ref{fig:pinch} shows the
-mechanism). That collapse is a property of the toy maps, not the
+mechanism: one two-pixel $\POSS$ pinch disqualifies a segment whose coverage
+is 96\%). That collapse is a property of the toy maps, not the
 certificate: the toy scores are lightly-blurred masks whose skeletons turn
 POSSIBLE \emph{en masse} at large $\eps$, whereas the real maps are sharp
 enough that connectivity largely survives (0.343 of grout length certified
@@ -1461,12 +1462,12 @@ absence from the maximal mask; for a cycle, hole persistence at both
 extremes; for a connectivity segment, endpoint connectedness in the
 minimal mask.
 
-\paragraph{Random-mask baseline (registered).} To measure \S3.6's
+\paragraph{Random-mask baseline (registered).} To measure \S\ref{sec:soundness}'s
 tightness claim, \texttt{random\_baseline.py} plants fillable square rings
 (interior area $=c$) and pinched bars (min-cut $c$ verified exactly by
 max-flow) and scores the \emph{semantic} violation events --- hole
 destroyed, endpoints disconnected --- under two samplers: the uniform
-reachable-mask model of \S3.6 and the harness's own (per-mask
+reachable-mask model of \S\ref{sec:soundness} and the harness's own (per-mask
 $q \sim U(0.1, 0.9)$, iid per pixel). Detection probabilities are computed
 exactly (closed form for the ring; full pinch-block enumeration for the
 bar) and Monte-Carlo cross-checked; the committed

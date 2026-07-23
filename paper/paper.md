@@ -690,8 +690,8 @@ Worst-case over the 30 crops — the right headline for a worst-case paper — t
 at ε = 0.40 (each the minimum over the 30 crops, on *different* crops; the
 full per-crop distribution is in Appendix A). Our pre-registered non-vacuity criterion — at least 50% of grout length
 certainly-foreground, with at least one certified component, at the useful ε —
-passes; the registered kill
-condition (<10% certified at every useful ε) is not triggered. The
+passes; the pre-registered kill
+condition (under 10% certified at every useful ε) is not triggered. The
 component count *rises* with ε (17.9 → 41.7) — that is CERT_FG
 fragmenting, counted as certified fragments, not evidence of more
 structure.
